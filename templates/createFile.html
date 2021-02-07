@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+ 
+{% block content %}
+{% load widget_tweaks %}
+  <h2>PDF Form</h2>
+ 
+  <form method="post" id="fileForm" enctype="multipart/form-data"
+  data-subjects-url="{% url 'ajax_load-subjects' %}" data-chapters-url="{% url 'ajax_load-chapters' %}" novalidate>
+    {% csrf_token %}
+    {% for field in form.visible_fields %}
+   <div class="form-group">
+  <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+  {{ field|add_class:'form-control' }}
+  {% for error in field.errors %}
+    <span class="help-block">{{ error }}</span>
+  {% endfor %}
+   </div>
+ {% endfor %}
+    <button type="submit" class="btn btn-success">Save</button>
+    <a href="{% url 'pdfList' %}">Files list</a>
+
+  </form>
+ 
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script>
+    $("#id_level").change(function () {
+      var url = $("#fileForm").attr("data-subjects-url");
+      var level_id = $(this).val();
+ 
+      $.ajax({
+        url: url,
+        data: {
+          'level': level_id
+        },
+        success: function (data) {
+          $("#id_subject").html(data);
+        }
+      });
+ 
+    });
+
+    $("#id_subject").change(function () {
+      var url = $("#fileForm").attr("data-chapters-url");
+      var subject_id = $(this).val();
+ 
+      $.ajax({
+        url: url,
+        data: {
+          'subject': subject_id
+        },
+        success: function (data) {
+          $("#id_chapter").html(data);
+        }
+      });
+ 
+    });
+  </script>
+ 
+{% endblock %}

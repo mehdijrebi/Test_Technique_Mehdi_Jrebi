@@ -1,0 +1,27 @@
+<table class="table table-striped custab">
+    <thead>
+        <tr>
+        <th>Date</th>
+        <th>Level</th>
+        <th>Subject</th>
+        <th>Chapter</th>
+        <th>File</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for element in files %}
+        <tr>
+          <td>{{ element.date }}</td>
+          <td>{{ element.level.name }}</td>
+          <td>{{ element.subject.name }}</td>
+          <td>{{ element.chapter.name }}</td>
+          <td><a href="/documents/{{ element.pdf }}"  >{{ element.pdf }}</a></td>
+    
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="4">Pas des fichiers. <a href="{% url 'createFile' %}">Add File</a>.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>

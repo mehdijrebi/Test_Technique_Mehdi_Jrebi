@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+ 
+ 
+{% block content %}
+<div class="d-flex justify-content-between">
+    <input class="form-data" type="date" id="date">
+    <a href="{% url 'createFile' %}" class="btn btn-primary btn-xs pull-right"><b>+</b>Add new file</a>
+</div>
+<div  id="table" data-files-url="{% url 'ajax_load-files' %}">
+    <table class="table table-striped custab">
+        <thead>
+            <tr>
+              <th>Date</th>
+              <th>Level</th>
+              <th>Subject</th>
+              <th>Chapter</th>
+              <th>File</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for element in files %}
+            <tr>
+              <td>{{ element.date }}</td>
+              <td>{{ element.level.name }}</td>
+              <td>{{ element.subject.name }}</td>
+              <td>{{ element.chapter.name }}</td>
+              <td><a href="/documents/{{ element.pdf }}"  >{{ element.pdf }}</a></td>
+        
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="4">No files found. <a href="{% url 'createFile' %}">Add new file</a>.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+</div>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script>
+    $("#date").change(function () {
+      var url = $("#table").attr("data-files-url");
+      var date = $(this).val();
+ 
+      $.ajax({
+        url: url,
+        data: {
+          'date': date
+        },
+        success: function (data) {
+          $("#table").html(data);
+        }
+      });
+ 
+    });
+
+   
+  </script>
+{% endblock %}
