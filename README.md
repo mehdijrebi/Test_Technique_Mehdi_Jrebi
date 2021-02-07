@@ -7,6 +7,7 @@ This project is a technical test for Voguel consulting.
 Template is written with django 3.1.6 and python 3 in mind.
 
 ![Default Home View](__screenshots/capture1.PNG?raw=true "Title")
+![Default Home View](__screenshots/capture2.PNG?raw=true "Title")
 
 ### Main features
 
